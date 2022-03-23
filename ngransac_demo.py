@@ -229,13 +229,13 @@ def matcher_video(image1, image2, outimg, focallength1, focallength2, model, hyp
 # read images
   #img1 = cv2.imread(image1)
   img1 = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
-  img1 = cv2.resize(img1, ((int(img1.shape[1]*0.2)), (int(img1.shape[0]*0.2))), interpolation = cv2.INTER_AREA)
-  #cv2_imshow(img1)
+  #img1 = cv2.resize(img1, ((int(img1.shape[1]*0.2)), (int(img1.shape[0]*0.2))), interpolation = cv2.INTER_AREA)
+  cv2_imshow(img1)
 
   #img2 = cv2.imread(image2)
   img2 = cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY)
-  img2 = cv2.resize(img2, ((int(img2.shape[1]*0.2)), (int(img2.shape[0]*0.2))), interpolation = cv2.INTER_AREA)
-  #cv2_imshow(img2)
+  #img2 = cv2.resize(img2, ((int(img2.shape[1]*0.2)), (int(img2.shape[0]*0.2))), interpolation = cv2.INTER_AREA)
+  cv2_imshow(img2)
   # calibration matrices of image 1 and 2, principal point assumed to be at the center
   K1 = np.eye(3)
   K1[0,0] = K1[1,1] = focallength1
