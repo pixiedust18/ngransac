@@ -113,7 +113,7 @@ def test_net(net, image, text_threshold, link_threshold, low_text, cuda, poly, r
 
     return boxes, polys, ret_score_text
 
-def predict_video(img1_pth = './images/2_a.jpg', img2_pth = './images/2_b.jpg', pretrained_model = './models/craft_mlt_25k.pth'):
+def predict_video(vid1_pth = '/content/drive/MyDrive/BE Project/shortvid.mov', vid2_pth = '/content/drive/MyDrive/BE Project/shortvid.mov', pretrained_model = './models/craft_mlt_25k.pth'):
   net = CRAFT()     # initialize
 
   # print('Loading weights from checkpoint (' + a + ')')
@@ -129,18 +129,6 @@ def predict_video(img1_pth = './images/2_a.jpg', img2_pth = './images/2_b.jpg', 
 
   net.eval()
 
-
-  good_matches = []
-  for i in range(len(all_matches)):
-    if inlier_mask[i] == 1:
-      good_matches.append(all_matches[i])
-
-  point_corresp = []
-  for match in good_matches:
-    p1 = kp1[match.queryIdx].pt
-    p2 = kp2[match.trainIdx].pt
-    point_corresp.append((p1,p2))
-    
   # load data
   cap1 = cv2.VideoCapture(vid1_pth)
   cap2 = cv2.VideoCapture(vid2_pth)
@@ -167,6 +155,17 @@ def predict_video(img1_pth = './images/2_a.jpg', img2_pth = './images/2_b.jpg', 
             # cv2_imshow(frame1)
             # cv2_imshow(frame2)
             inlier_mask, all_matches, kp1, kp2 = matcher_video(image1, image2, 'matching_op.png', 900, 900, '', 1000, './models/weights_e2e_E_r1.00_.net', False)
+
+            good_matches = []
+            for i in range(len(all_matches)):
+              if inlier_mask[i] == 1:
+                good_matches.append(all_matches[i])
+
+            point_corresp = []
+            for match in good_matches:
+              p1 = kp1[match.queryIdx].pt
+              p2 = kp2[match.trainIdx].pt
+              point_corresp.append((p1,p2))
 
             bboxes1, polys1, score_text1 = test_net(net, image1, 0.4, 0.4, 0.4, True, False, None)
             bboxes2, polys2, score_text2 = test_net(net, image2, 0.4, 0.4, 0.4, True, False, None)
@@ -216,12 +215,12 @@ def predict_video(img1_pth = './images/2_a.jpg', img2_pth = './images/2_b.jpg', 
               image1 = cv2.polylines(image1, np.int32([bx1]), True, color, 4)
               image2 = cv2.polylines(image2, np.int32([bx2]), True, color, 4)
               #frame = np.concatenate((frame1, frame2), axis=1)
-              frame = cv2.hconcat([frame1, frame2])
+            frame = cv2.hconcat([image1, image2])
               #print(frame.shape)
               #break
               #cv2_imshow(frame)
 
-              out.write(frame)
+            out.write(frame)
 
             # k = cv2.waitKey(5)
 
