@@ -223,14 +223,14 @@ def predict_im(image1, image2, pretrained_model = './models/craft_mlt_25k.pth'):
   #image1 = cv2.imread(img1_pth)
   #print(image1.shape)
   image1 = cv2.resize(image1, ((int(image1.shape[1]*0.2)), (int(image1.shape[0]*0.2))), interpolation = cv2.INTER_AREA)
-  print(image1.shape)
+  #print(image1.shape)
   # cv2.imwrite(img1.split('.')[0] + 'resized.' + img1.split('.')[1], i1)
 
   #image2 = cv2.imread(img2_pth)
-  print(image2.shape)
+  #print(image2.shape)
   image2 = cv2.resize(image2, ((int(image2.shape[1]*0.2)), (int(image2.shape[0]*0.2))), interpolation = cv2.INTER_AREA)
   # cv2.imwrite(img2.split('.')[0] + 'resized.' + img2.split('.')[1], i2)
-  print(image2.shape)
+  #print(image2.shape)
   
   #inlier_mask, all_matches, kp1, kp2 = matcher(img1_pth, img2_pth, 'matching_op.png', 900, 900, '', 1000, './models/weights_e2e_E_r1.00_.net', False)
   inlier_mask, all_matches, kp1, kp2 = matcher_video(image1, image2, 'matching_op.png', 900, 900, '', 1000, './models/weights_e2e_E_r1.00_.net', False)
@@ -300,7 +300,7 @@ def predict_im(image1, image2, pretrained_model = './models/craft_mlt_25k.pth'):
     else:
       relational_matrix[box_id1][box_id2] +=1
 
-  print(relational_matrix)
+  #print(relational_matrix)
 
   final_corresp_boxes = []
   for column in relational_matrix:
@@ -310,7 +310,7 @@ def predict_im(image1, image2, pretrained_model = './models/craft_mlt_25k.pth'):
       corr = (column, max_idx)
       final_corresp_boxes.append(corr)
 
-  print(final_corresp_boxes[:5])
+  #print(final_corresp_boxes[:5])
 
 
   from google.colab.patches import cv2_imshow
@@ -321,8 +321,8 @@ def predict_im(image1, image2, pretrained_model = './models/craft_mlt_25k.pth'):
     color = generate_random_colour()
     image1 = cv2.polylines(image1, np.int32([bx1]), True, color, 4)
     image2 = cv2.polylines(image2, np.int32([bx2]), True, color, 4)
-  cv2_imshow(image1)
-  cv2_imshow(image2)
+  #cv2_imshow(image1)
+  #cv2_imshow(image2)
   return image1, image2
   
   
